@@ -1,0 +1,79 @@
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 399c021..4bf216d 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -1,6 +1,8 @@
+ /* This is the Linux kernel elf-loading code, ported into user space */
+ #include <sys/time.h>
+ #include <sys/param.h>
++#include <sys/types.h>
++#include <sys/stat.h>
+ 
+ #include <stdio.h>
+ #include <sys/types.h>
+@@ -2682,6 +2684,19 @@ static void fill_auxv_note(struct memelfnote *note, const TaskState *ts)
+     }
+ }
+ 
++const char *coredump_prefix = ".";
++void qemu_set_core_dump_prefix(const char *prefix)
++{
++    struct stat path_stat;
++    char* path = NULL;
++
++    if (stat(prefix, &path_stat) != 0)return;
++    if (!S_ISDIR(path_stat.st_mode))return;
++
++    path = (char *)malloc(PATH_MAX+1);
++    coredump_prefix = realpath(prefix, path);
++}
++
+ /*
+  * Constructs name of coredump file.  We have following convention
+  * for the name:
+@@ -2710,7 +2725,7 @@ static int core_dump_filename(const TaskState *ts, char *buf,
+     base_filename = strdup(basename(filename));
+     (void) strftime(timestamp, sizeof (timestamp), "%Y%m%d-%H%M%S",
+                     localtime_r(&tv.tv_sec, &tm));
+-    (void) snprintf(buf, bufsize, "qemu_%s_%s_%d.core",
++    (void) snprintf(buf, bufsize, "%s/qemu_%s_%s_%d.core", coredump_prefix,
+                     base_filename, timestamp, (int)getpid());
+     free(base_filename);
+     free(filename);
+diff --git a/linux-user/main.c b/linux-user/main.c
+index a8adb04..6834442 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -3541,6 +3541,11 @@ static void handle_arg_stack_size(const char *arg)
+     }
+ }
+ 
++static void handle_arg_core(const char *arg)
++{
++    qemu_set_core_dump_prefix(arg);
++}
++
+ static void handle_arg_ld_prefix(const char *arg)
+ {
+     interp_prefix = strdup(arg);
+@@ -3664,6 +3669,8 @@ static const struct qemu_argument arg_table[] = {
+      "",           "print this help"},
+     {"g",          "QEMU_GDB",         true,  handle_arg_gdb,
+      "port",       "wait gdb connection to 'port'"},
++    {"C",          "QEMU_CORE_PREFIX", true,  handle_arg_core,
++     "path",       "set coredump path prefix to 'path' (default '.')"},
+     {"L",          "QEMU_LD_PREFIX",   true,  handle_arg_ld_prefix,
+      "path",       "set the elf interpreter prefix to 'path'"},
+     {"s",          "QEMU_STACK_SIZE",  true,  handle_arg_stack_size,
+diff --git a/linux-user/qemu.h b/linux-user/qemu.h
+index 8012cc2..9602ff9 100644
+--- a/linux-user/qemu.h
++++ b/linux-user/qemu.h
+@@ -182,6 +182,7 @@ int loader_exec(int fdexec, const char *filename, char **argv, char **envp,
+ 
+ int load_elf_binary(struct linux_binprm *bprm, struct image_info *info);
+ int load_flt_binary(struct linux_binprm *bprm, struct image_info *info);
++void qemu_set_core_dump_prefix(const char *prefix);
+ 
+ abi_long memcpy_to_target(abi_ulong dest, const void *src,
+                           unsigned long len);

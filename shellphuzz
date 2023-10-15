@@ -1,0 +1,161 @@
+#!/usr/bin/env python
+import argparse
+import os
+from typing import Callable, List
+
+from config import config
+from fuzzer import Fuzzer
+from fuzzer.callbacks import GreaseCallback, DrillerCallback
+
+
+def parse_arguments():
+    parser = argparse.ArgumentParser(description="Fuzzer interface")
+    parser.add_argument(
+        'binary',
+        help="Fuzzing target binary path",
+    )
+    parser.add_argument(
+        '-g', '--grease-dir',
+        help="Inputs directory to grease the fuzzer with when it gets stuck",
+    )
+    parser.add_argument(
+        '-d', '--driller-workers',
+        help="Drill with N workers.",
+        type=int,
+    )
+    parser.add_argument(
+        '-f', '--callback-interval',
+        help="Time period for calling callback when AFL gets stuck (seconds)",
+        type=float,
+        default=30.0,
+    )
+    parser.add_argument(
+        '-w', '--work-dir',
+        help="The work directory for AFL.",
+        default=getattr(config, 'BASE_WORK_DIR'),
+    )
+    parser.add_argument(
+        '-c', '--afl-cores',
+        help="Number of AFL workers to spin up.",
+        default=1,
+        type=int,
+    )
+    parser.add_argument(
+        '-C', '--first-crash',
+        help="Stop on the first crash.",
+        action='store_true',
+        default=False,
+    )
+    parser.add_argument(
+        '-t', '--timeout',
+        help="Timeout (in seconds).",
+        type=float,
+    )
+    parser.add_argument(
+        '--memory',
+        help="Memory limit to pass to AFL (MB, or use k, M, G, T suffixes)",
+        default='8G',
+    )
+    parser.add_argument(
+        '--no-dictionary',
+        help="Do not create a dictionary before fuzzing.",
+        action='store_true',
+        default=False,
+    )
+    parser.add_argument(
+        '-q', '--qemu',
+        help='Use QEMU instrumentation',
+        action='store_true',
+        default=False,
+    )
+    parser.add_argument(
+        '-s', '--seed-dir',
+        action="append",
+        help="Directory of files to seed fuzzer with",
+    )
+    parser.add_argument(
+        '--run-timeout',
+        help="Number of seconds permitted for each run of binary",
+        type=int,
+    )
+    parser.add_argument(
+        '--driller-timeout',
+        help="Number of seconds to allow driller to run",
+        type=int,
+        default=10 * 60,
+    )
+    parser.add_argument(
+        '--length-extension',
+        help="Try extending inputs to driller by this many bytes",
+        type=int,
+    )
+    return parser.parse_args()
+
+
+def create_stuck_callback(callbacks: List[Callable[[Fuzzer], None]]):
+    def stuck_callback(fuzzer: Fuzzer):
+        for callback in callbacks:
+            callback(fuzzer)
+
+    return stuck_callback
+
+
+def main():
+    args = parse_arguments()
+    callbacks = []
+
+    if args.grease_dir:
+        callbacks.append(GreaseCallback(args.grease_dir))
+    if args.driller_workers:
+        callbacks.append(
+            DrillerCallback(
+                num_workers=args.driller_workers,
+                worker_timeout=args.driller_timeout,
+                length_extension=args.length_extension)
+        )
+    stuck_callback = create_stuck_callback(callbacks)
+
+    seeds = None
+    if args.seed_dir:
+        seeds = []
+        print("[*] Reading seeds...")
+        for dir_path in args.seed_dir:
+            for seed_fn in os.listdir(dir_path):
+                seed_path = os.path.join(dir_path, seed_fn)
+                if not os.path.isfile(seed_path):
+                    continue
+
+                with open(seed_path) as sf:
+                    seeds.append(sf.read())
+
+    print("[*] Creating fuzzer...")
+    fuzzer = Fuzzer(
+        args.binary,
+        afl_count=args.afl_cores,
+        afl_timeout=args.run_timeout,
+        callback_interval=args.callback_interval,
+        create_dictionary=not args.no_dictionary,
+        first_crash=args.first_crash,
+        memory=args.memory,
+        qemu=args.qemu,
+        seeds=seeds,
+        stuck_callback=stuck_callback,
+        timeout=args.timeout,
+        work_dir=args.work_dir,
+    )
+
+    print("[*] Starting fuzzer...")
+    try:
+        fuzzer.start()
+    except KeyboardInterrupt:
+        print("[*] Aborting wait. Ctrl-C again for KeyboardInterrupt.")
+    except Exception as e:
+        print("[*] Unexpected exception received (%s). Terminating fuzzer." % e)
+        fuzzer.kill()
+        for callback in callbacks:
+            callback.kill()
+        raise
+
+
+if __name__ == '__main__':
+    main()

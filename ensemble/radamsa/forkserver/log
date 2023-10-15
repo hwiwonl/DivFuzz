@@ -1,0 +1,165 @@
+filename: /tmp/myfilesHM1R8
+parent
+child
+[fuzz] starting execv
+[forksrv] start forkserver
+[forksrv] child alive write success
+child_start: 41414141
+[fuzz] forkserver is up
+filename: /tmp/myfileXXXXXX
+[fuzz] parent_alive write success
+[forksrv] Parent is alive!
+[fuzz] child_pid read success
+[fuzz] Fork server works right!
+fname: /home/djlee/ctf/defkor/emupatch/examples/test/output/myfileWBQTGc
+auf: aѣ��󠁼�‫a
+t/myfileWBQTGc
+[fuzz] Success to communicate with Forkserver
+[fuzz] child status: 0
+child status: 0
+[fuzz] parent_alive write success
+[forksrv] Parent is alive!
+[fuzz] child_pid read success
+[fuzz] Fork server works right!
+fname: /home/djlee/ctf/defkor/emupatch/examples/test/output/myfileLZx6uc
+auf: aѣ��󠁼�‫a
+aaaaaaa
+LZx6uc
+[fuzz] Success to communicate with Forkserver
+[fuzz] child status: 0
+child status: 0
+[fuzz] parent_alive write success
+[forksrv] Parent is alive!
+[fuzz] child_pid read success
+[fuzz] Fork server works right!
+fname: /home/djlee/ctf/defkor/emupatch/examples/test/output/myfile89plad
+auf: aѣ��󠁼�‫a
+aaaaaaa
+‮a󠁏`b󠁅a
+
+[fuzz] Success to communicate with Forkserver
+[fuzz] child status: 0
+child status: 0
+[fuzz] parent_alive write success
+[forksrv] Parent is alive!
+[fuzz] child_pid read success
+[fuzz] Fork server works right!
+fname: /home/djlee/ctf/defkor/emupatch/examples/test/output/myfileB5w6Wc
+auf: aѣ��󠁼�‫a
+aaaaaaa
+‮a󠁏`b󠁅a
+aaa`
+
+[fuzz] Success to communicate with Forkserver
+[fuzz] child status: 0
+child status: 0
+[fuzz] parent_alive write success
+[forksrv] Parent is alive!
+[fuzz] child_pid read success
+[fuzz] Fork server works right!
+fname: /home/djlee/ctf/defkor/emupatch/examples/test/output/myfiley2884b
+auf: aѣ��󠁼�‫a
+aaaaaaa
+‮a󠁏`b󠁅a
+aaa`
+aaaa����ր�󠀸�󠁹ʶ����������������������������
+[fuzz] Success to communicate with Forkserver
+[fuzz] child status: 0
+child status: 0
+[fuzz] parent_alive write success
+[forksrv] Parent is alive!
+[fuzz] child_pid read success
+[fuzz] Fork server works right!
+fname: /home/djlee/ctf/defkor/emupatch/examples/test/output/myfileN8cp0e
+auf: aѣ��󠁼�‫a
+aaaaaaa
+‮a󠁏`b󠁅a
+aaa`
+aaaa����ր�󠀸�󠁹ʶ����������������������������
+[fuzz] Success to communicate with Forkserver
+[fuzz] child status: 0
+child status: 0
+[fuzz] parent_alive write success
+[forksrv] Parent is alive!
+[fuzz] child_pid read success
+[fuzz] Fork server works right!
+fname: /home/djlee/ctf/defkor/emupatch/examples/test/output/myfileA4PdNe
+auf: aѣ��󠁼�‫a
+aaaaaaa
+‮a󠁏`b󠁅a
+aaa`
+aaaa����ր�󠀸�󠁹ʶ����������������������������
+[fuzz] Success to communicate with Forkserver
+[fuzz] child status: 0
+child status: 0
+[forksrv] Parent is alive!
+[fuzz] parent_alive write success
+[fuzz] child_pid read success
+[fuzz] Fork server works right!
+fname: /home/djlee/ctf/defkor/emupatch/examples/test/output/myfileFdMxFf
+auf: aѣ��󠁼�‫a
+aaaaaaa
+‮a󠁏`b󠁅a
+aaa`
+aaaa����ր�󠀸�󠁹ʶ����������������������������
+[fuzz] Success to communicate with Forkserver
+[fuzz] child status: 0
+child status: 0
+[forksrv] Parent is alive!
+[fuzz] parent_alive write success
+[fuzz] child_pid read success
+[fuzz] Fork server works right!
+fname: /home/djlee/ctf/defkor/emupatch/examples/test/output/myfileIC6Vjf
+auf: aѣ��󠁼�‫a
+aaaaaaa
+‮a󠁏`b󠁅a
+aaa`
+aaaa����ր�󠀸�󠁹ʶ����������������������������
+[fuzz] Success to communicate with Forkserver
+[fuzz] child status: 0
+child status: 0
+[forksrv] Parent is alive!
+[fuzz] parent_alive write success
+[fuzz] child_pid read success
+[fuzz] Fork server works right!
+fname: /home/djlee/ctf/defkor/emupatch/examples/test/output/myfileLjDj4d
+auf: aѣ��󠁼�‫a
+aaaaaaa
+‮a󠁏`b󠁅a
+aaa`
+aaaa����ր�󠀸�󠁹ʶ����������������������������
+fname: /home/djlee/ctf/defkor/emupatch/examples/test/output/myfileJIQJ5d
+buf: aaaa
+aaaa
+aaaa
+aaaa
+aaaa
+aaaa
+aaaa
+aaaa
+aaaa
+aaaa
+aaaa
+aaaa
+aaaa
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+
+[fuzz] Success to communicate with Forkserver
+[fuzz] child status: 0
+child status: 0

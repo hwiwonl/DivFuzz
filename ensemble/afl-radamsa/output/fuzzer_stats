@@ -1,0 +1,27 @@
+start_time        : 1500111613
+last_update       : 1500113142
+fuzzer_pid        : 47954
+cycles_done       : 172
+execs_done        : 1553492
+execs_per_sec     : 0.00
+paths_total       : 10
+paths_favored     : 9
+paths_found       : 9
+paths_imported    : 0
+max_depth         : 8
+cur_path          : 7
+pending_favs      : 0
+pending_total     : 0
+variable_paths    : 0
+stability         : 100.00%
+bitmap_cvg        : 0.07%
+unique_crashes    : 0
+unique_hangs      : 0
+last_path         : 1500111750
+last_crash        : 0
+last_hang         : 0
+execs_since_crash : 1553492
+exec_timeout      : 20
+afl_banner        : vmndh.new
+afl_version       : 2.46b
+command_line      : ./afl-fuzz -o output -i /home/jinmo/2017/defkor/emupatch/examples/vmndh/inputs -- /home/jinmo/2017/defkor/emupatch/examples/vmndh/out/vmndh.new -file /home/jinmo/2017/defkor/emupatch/examples/vmndh/crackme1

@@ -1,0 +1,42 @@
+djlee@ubuntu:~/c/dupl_check$ ./dupl.sh ./ ./b
+[+] Directory Path: ./
+[+] target_binary: ./b
+[+] Entry: ./input_good
+*** stack smashing detected ***: /home/djlee/c/dupl_check/b terminated
+[+] output: Reading symbols from ./b...(no debugging symbols found)...done.
+(gdb) Starting program: /home/djlee/c/dupl_check/b < ./input_good
+Enter a value :
+You entered: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+Program received signal SIGABRT, Aborted.
+0x00007ffff7a42428 in __GI_raise (sig=sig@entry=6)
+    at ../sysdeps/unix/sysv/linux/raise.c:54
+54	../sysdeps/unix/sysv/linux/raise.c: No such file or directory.
+(gdb) #0  0x00007ffff7a42428 in __GI_raise (sig=sig@entry=6)
+    at ../sysdeps/unix/sysv/linux/raise.c:54
+#1  0x00007ffff7a4402a in __GI_abort () at abort.c:89
+#2  0x00007ffff7a847ea in __libc_message (do_abort=do_abort@entry=1,
+    fmt=fmt@entry=0x7ffff7b9c45f "*** %s ***: %s terminated\n")
+    at ../sysdeps/posix/libc_fatal.c:175
+#3  0x00007ffff7b2611c in __GI___fortify_fail (msg=<optimized out>,
+    msg@entry=0x7ffff7b9c441 "stack smashing detected") at fortify_fail.c:37
+#4  0x00007ffff7b260c0 in __stack_chk_fail () at stack_chk_fail.c:28
+#5  0x0000000000400691 in main ()
+(gdb) quit
+A debugging session is active.
+
+	Inferior 1 [process 10001] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+[+] entry: ./input_good
+[+] SIGSEGV Detected
+[+] Entry: ./input_second
+[+] output: Reading symbols from ./b...(no debugging symbols found)...done.
+(gdb) Starting program: /home/djlee/c/dupl_check/b < ./input_second
+Enter a value :
+You entered: AAAAAA
+[Inferior 1 (process 10010) exited normally]
+(gdb) No stack.
+(gdb) quit
+[+] entry: ./input_second
+[-] End
